@@ -6,4 +6,5 @@ import com.contactapi.entity.Contact;
 
 public interface ContactRepository extends JpaRepository<Contact, String>{
 
+	
 }

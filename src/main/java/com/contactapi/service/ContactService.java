@@ -7,5 +7,7 @@ import com.contactapi.entity.Contact;
 public interface ContactService {
 	
 	Page<Contact> getAll(int page);
+	
+	
 
 }
