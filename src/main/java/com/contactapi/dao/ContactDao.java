@@ -1,15 +1,18 @@
 package com.contactapi.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Repository;
 
 import com.contactapi.entity.Contact;
 import com.contactapi.repository.ContactRepository;
 
+@Repository
 public class ContactDao {
 	
 	@Autowired
@@ -37,6 +40,11 @@ public class ContactDao {
 		}
 		return false;
 
+	}
+
+	public List<Contact> findAll() {
+		// TODO Auto-generated method stub
+		return contactRepository.findAll();
 	}
 	
 

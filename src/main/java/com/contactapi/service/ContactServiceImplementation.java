@@ -5,18 +5,21 @@ import com.contactapi.constant.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.contactapi.dao.ContactDao;
 import com.contactapi.entity.Contact;
 
+@Service
 public class ContactServiceImplementation implements ContactService {
 
 	@Autowired
@@ -75,4 +78,9 @@ public class ContactServiceImplementation implements ContactService {
 			throw new RuntimeException("Unable to save image", exception);
 		}
 	};
+
+	public List<Contact> findAll() {
+		// TODO Auto-generated method stub
+		return contactDao.findAll();
+	}
 }
