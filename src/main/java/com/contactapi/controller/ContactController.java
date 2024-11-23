@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.service.annotation.PutExchange;
 
 import com.contactapi.entity.Contact;
 import com.contactapi.service.ContactServiceImplementation;
@@ -36,6 +38,13 @@ public class ContactController {
 	public Contact createContact(@RequestBody Contact contact) {
 		return contactService.createContact(contact);
 	}
+	@PutExchange("/image")
+	public String insertImage(@RequestParam String id,@RequestParam("file")MultipartFile file) {
+		//TODO: process POST request
+		
+		return contactService.uploadPhoto(id, file);
+	}
+	
 	
 	
 	

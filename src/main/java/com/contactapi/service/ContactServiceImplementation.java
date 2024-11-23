@@ -43,41 +43,30 @@ public class ContactServiceImplementation implements ContactService {
 		contactDao.deleteContact(id);
 	}
 
-	public String uploadPhoto(String id, MultipartFile file) {
-		Contact c = getContact(id);
-		String photoUrl = null;
-		c.setPhotoUrl(photoUrl);
-		contactDao.createContact(c);
-		return photoUrl;
-	}
+	  public String uploadPhoto(String id, MultipartFile file) {
+	        Contact contact = getContact(id);
+	        String photoUrl = photoFunction.apply(id, file);
+	        contact.setPhotoUrl(photoUrl);
+	        contactDao.createContact(contact);
+	        return photoUrl;
+	    }
 
-	private final Function<String, String> fileExtension = filename -> Optional.of(filename)
-			.filter(name -> name.contains(".")).map(name -> "." + name.substring(filename.lastIndexOf(".") + 1))
-			.orElse("-png"); // Default to "-png" if no extension is found
+	    private final Function<String, String> fileExtension = filename -> Optional.of(filename).filter(name -> name.contains("."))
+	            .map(name -> "." + name.substring(filename.lastIndexOf(".") + 1)).orElse(".png");
 
-	private final BiFunction<String, MultipartFile, String> photoFunction = (id, image) -> {
-		String filename = id + fileExtension.apply(image.getOriginalFilename());
-
-		try {
-			// Define the file storage location
-			Path fileStorageLocation = Paths.get(Constant.PHOTO_DIRECTORY).toAbsolutePath().normalize();
-
-			// Create directories if they don't exist
-			if (!Files.exists(fileStorageLocation)) {
-				Files.createDirectories(fileStorageLocation);
-			}
-
-			// Copy the image to the storage location
-			Files.copy(image.getInputStream(), fileStorageLocation.resolve(filename),
-					StandardCopyOption.REPLACE_EXISTING);
-
-			// Return the URI of the stored image
-			return ServletUriComponentsBuilder.fromCurrentContextPath().path("/contacts/image/" + filename)
-					.toUriString();
-		} catch (Exception exception) {
-			throw new RuntimeException("Unable to save image", exception);
-		}
-	};
+	    private final BiFunction<String, MultipartFile, String> photoFunction = (id, image) -> {
+	        String filename = id + fileExtension.apply(image.getOriginalFilename());
+	        try {
+	            Path fileStorageLocation = Paths.get(Constant.PHOTO_DIRECTORY).toAbsolutePath().normalize();
+	            if(!Files.exists(fileStorageLocation)) { Files.createDirectories(fileStorageLocation); }
+	            Files.copy(image.getInputStream(), fileStorageLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+	            return ServletUriComponentsBuilder
+	                    .fromCurrentContextPath()
+	                    .path("/contacts/image/" + filename).toUriString();
+	        }catch (Exception exception) {
+	            throw new RuntimeException("Unable to save image");
+	        }
+	    };
 
 	public List<Contact> findAll() {
 		// TODO Auto-generated method stub
