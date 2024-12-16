@@ -274,7 +274,12 @@ i {
 }
 
 .contact__image {
-  width: 50px;
+  width: 240px; /* Set the desired width */
+  height: 217px; /* Set the desired height */
+  object-fit: cover; /* Ensures the image fills the area while maintaining aspect ratio */
+  border-radius: 50%; /* Makes the image circular */
+  border: 2px solid #ccc; /* Optional: Add a border for styling */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .contact__image img {

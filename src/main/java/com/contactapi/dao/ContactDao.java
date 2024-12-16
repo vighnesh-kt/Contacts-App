@@ -18,9 +18,8 @@ public class ContactDao {
 	@Autowired
 	private ContactRepository contactRepository;
 
-	public Page<Contact> findAll(int page) {
-		// TODO Auto-generated method stub
-		return contactRepository.findAll(PageRequest.of(page-1, 4,Sort.by("name")));
+	public Page<Contact> findAll(Integer page, Integer size) {
+	    return contactRepository.findAll(PageRequest.of(page, size, Sort.by("name")));
 	}
 	
 	public Optional<Contact> getContact(String id) {
@@ -30,6 +29,7 @@ public class ContactDao {
 	public Contact createContact(Contact contact) {
 		// TODO Auto-generated method stub
 		return contactRepository.save(contact);
+		
 	}
 	
 	
@@ -45,6 +45,11 @@ public class ContactDao {
 	public List<Contact> findAll() {
 		// TODO Auto-generated method stub
 		return contactRepository.findAll();
+	}
+
+	public Contact findById(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return contactRepository.findById(id).orElseThrow(() -> new Exception("User not found with id: " + id));
 	}
 	
 

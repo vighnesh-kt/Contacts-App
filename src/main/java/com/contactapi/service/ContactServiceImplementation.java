@@ -25,12 +25,6 @@ public class ContactServiceImplementation implements ContactService {
 	@Autowired
 	private ContactDao contactDao;
 
-	@Override
-	public Page<Contact> getAll(int page) {
-
-		return contactDao.findAll(page);
-	}
-
 	public Contact getContact(String id) {
 		return contactDao.getContact(id).orElseThrow(() -> new RuntimeException("Contact not found"));
 	}
@@ -39,8 +33,8 @@ public class ContactServiceImplementation implements ContactService {
 		return contactDao.createContact(contact);
 	}
 
-	public void removeContact(String id) {
-		contactDao.deleteContact(id);
+	public boolean removeContact(String id) {
+		return contactDao.deleteContact(id);
 	}
 
 	  public String uploadPhoto(String id, MultipartFile file) {
@@ -72,4 +66,27 @@ public class ContactServiceImplementation implements ContactService {
 		// TODO Auto-generated method stub
 		return contactDao.findAll();
 	}
+
+	public Page<Contact> getAll(Integer page, Integer size) {
+		// TODO Auto-generated method stub
+		return contactDao.findAll(page,size);
+	}
+
+	public Contact updateContact(String id, Contact contact) throws Exception {
+	    // Fetch the existing contact by ID
+	    Contact oldContact = contactDao.findById(id);
+
+	    // Update the fields of the old contact with the new data
+	    oldContact.setName(contact.getName());
+	    oldContact.setEmail(contact.getEmail());
+	    oldContact.setTitle(contact.getTitle());
+	    oldContact.setAddress(contact.getAddress());
+	    oldContact.setPhone(contact.getPhone());
+	    oldContact.setStatus(contact.getStatus());
+	    oldContact.setPhotoUrl(contact.getPhotoUrl());
+
+	    // Save the updated contact
+	    return contactDao.createContact(oldContact);
+	}
+
 }
